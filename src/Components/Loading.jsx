@@ -17,13 +17,11 @@ const Loading = ({ message }) => {
   // Function to get a random SVG path from your assets folder
   const getRandomSvgPath = () => {
     const randomSvgFile = svgFiles[Math.floor(Math.random() * svgFiles.length)];
-    console.log('n',randomSvgFile)
     return randomSvgFile;
   };
 
   return (
     <div className="modal-container">
-      {console.log(getRandomSvgPath())}
       <div className="modal-content">
         <img src={getRandomSvgPath()} alt="loading" />
         <p>{message}</p>
