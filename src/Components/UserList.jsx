@@ -5,7 +5,7 @@ const UserList = ({ users, deleteUser, openUpdateForm }) => {
   return (
     <div>
       <h2>User List</h2>
-      <ul>
+      <ul className='flex-list'>
         {users.map((user) => (
           <div key={user._id} className="user-item">
             <div className="user-details">
