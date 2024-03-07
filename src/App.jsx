@@ -4,6 +4,9 @@ import UserForm from './Components/UserForm';
 import UserList from './Components/UserList'
 import UserUpdateForm from './Components/UserUpdateForm'; // Adjust the path accordingly
 import Loading from './Components/Loading';
+import {toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const App = () => {
   const [users, setUsers] = useState([]);
@@ -30,13 +33,15 @@ const App = () => {
         },
         body: JSON.stringify(userData),
       });
-      setIsLoading(false);
+     setIsLoading(false);
       const addedUser = await response.json();
-    
-      if(addedUser.error) alert(addedUser.error)
-      else setUsers((prevUsers) => [...prevUsers, addedUser]);
-      // Update the users state with the new data
-      
+  
+      if (addedUser.error) {
+        toast.error('Email already exists')
+      } else {
+        setUsers((prevUsers) => [...prevUsers, addedUser]);
+        toast.success('User added successfully');
+      }
     } catch (error) {
       console.error('Error adding user:', error);
     }
@@ -50,6 +55,7 @@ const App = () => {
       setIsLoading(false);
       setUsers(userList);
     } catch (error) {
+      toast.error('Failed to fetch users');
       console.error('Error fetching users:', error);
     }
   };
@@ -60,9 +66,11 @@ const App = () => {
       await fetch(`https://peach-jumpy-asphalt.glitch.me/users/${userId}`, {
         method: 'DELETE',
       });
+      toast.success('User deleted successfully');
       fetchUsers();
       setIsLoading(false);
     } catch (error) {
+      toast.error('Failed to delete user');
       console.error('Error deleting user:', error);
     }
   };
@@ -80,16 +88,22 @@ const App = () => {
       });
       setIsLoading(false);
       const updatedUserData = await response.json();
-      
+     
 
       // Update the users state with the new data
     
-      if(updatedUserData.error)alert(updatedUserData.error)
-      else setUsers((prevUsers) => prevUsers.map((user) => (user._id === updatedUserData._id ? updatedUserData : user)));
-      
+      if(updatedUserData.error){
+        toast.error('Update failed')
+        toast.error('Email already exists')
+      }
+      else{
+        toast.success('User updated successfully');
+        setUsers((prevUsers) => prevUsers.map((user) => (user._id === updatedUserData._id ? updatedUserData : user)));
+      } 
       // Reset selectedUser after updating
       setSelectedUser(null);
     } catch (error) {
+      toast.error(error)
       console.error('Error updating user:', error);
     }
   };
@@ -101,6 +115,7 @@ const App = () => {
 
   return (
     <div>
+       <ToastContainer />
       {/* Conditional Rendering: Show Loading Component if loading state is true */}
       {isLoading && <Loading message="Loading..." />}
 
