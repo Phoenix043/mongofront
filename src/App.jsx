@@ -37,7 +37,7 @@ const App = () => {
       const addedUser = await response.json();
   
       if (addedUser.error) {
-        toast.error('Email already exists')
+        toast.error('Validation Error')
       } else {
         setUsers((prevUsers) => [...prevUsers, addedUser]);
         toast.success('User added successfully');

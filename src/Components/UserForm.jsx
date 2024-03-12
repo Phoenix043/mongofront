@@ -1,11 +1,11 @@
 // UserForm.js
 import React, { useState, useEffect } from 'react';
-//import './RunawayButton.css'; // Import the styles
 
 const UserForm = ({ addUser }) => {
   const [userData, setUserData] = useState({
     name: '',
     email: '',
+    password: '', // New password field
   });
 
   const [buttonPosition, setButtonPosition] = useState({ x: 0, y: 0 });
@@ -18,18 +18,18 @@ const UserForm = ({ addUser }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Check if both name and email are filled before submitting
+    // Check if all fields are filled before submitting
     if (validateForm()) {
       addUser(userData);
-      setUserData({ name: '', email: '' }); // Reset form fields after submission
+      setUserData({ name: '', email: '', password: '' }); // Reset form fields after submission
     } else {
       console.error('Please fill in all necessary details.');
     }
   };
 
   const validateForm = () => {
-    // Check if both name and email are filled
-    const isValid = userData.name.trim() !== '' && userData.email.trim() !== '';
+    // Check if all fields are filled
+    const isValid = userData.name.trim() !== '' && userData.email.trim() !== '' && userData.password.trim() !== '';
     setIsFormValid(isValid);
     return isValid;
   };
@@ -59,11 +59,14 @@ const UserForm = ({ addUser }) => {
       <label>Email:</label>
       <input type="email" name="email" value={userData.email} onChange={handleInputChange} required />
 
+      {/* New Password Field */}
+      <label>Password:</label>
+      <input type="password" name="password" value={userData.password} onChange={handleInputChange} required />
+
       {/* Conditionally render the runaway button based on the form validity */}
       <button
         className={`runaway-button ${!isFormValid ? 'run-away' : ''}`}
         type="submit"
-        
       >
         Create User
       </button>
